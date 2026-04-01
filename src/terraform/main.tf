@@ -12,6 +12,25 @@ data "kubernetes_nodes" "all" {}
 #   value = [for n in data.kubernetes_nodes.all.nodes : n.metadata[0].name]
 # }
 
+# HCO CR (HyperConverged in kubevirt-hyperconverged ns)
+data "kubernetes_resource" "hco" {
+  api_version = "hco.kubevirt.io/v1beta1"
+  kind        = "HyperConverged"
+  metadata {
+    name      = "kubevirt-hyperconverged" # Default HCO name
+    namespace = "openshift-cnv"           # Or kubevirt-hyperconverged
+  }
+}
+
+# KubeVirt CR (managed by HCO)
+data "kubernetes_resource" "kubevirt" {
+  api_version = "kubevirt.io/v1"
+  kind        = "KubeVirt"
+  metadata {
+    name      = "kubevirt-kubevirt-hyperconverged"
+    namespace = "openshift-cnv"
+  }
+}
 
 locals {
   # Normalize node facts we need
