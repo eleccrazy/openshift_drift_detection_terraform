@@ -4,6 +4,36 @@ cluster: "rh-learning-osv"
 rules:
   - id: "workers_not_cordoned"
     description: "No worker-only nodes should be cordoned (unschedulable)"
-    severity: "info"
+    severity: "INFO"
     expected:
       cordoned_worker_nodes: []
+
+  - id: "hco_live_migration_config"
+    description: "Live migration configuration must match baseline"
+    severity: "FAIL"
+    expected:
+      live_migration_config:
+        bandwidth_per_migration: "64Mi"
+        parallel_migrations_per_node: 1
+        parallel_outgoing_migrations: 2
+        parallel_incoming_migrations: 2
+
+  - id: "hco_eviction_strategy"
+    description: "Eviction strategy must allow live migration"
+    severity: "FAIL"
+    expected:
+      eviction_strategy: "LiveMigrate"
+  
+  - id: "hco_feature_gates"
+    description: "HCO feature gates must be enabled"
+    severity: "WARN"
+    expected:
+      feature_gates:
+        enabled:
+          - "LiveMigration"
+  
+  - id: "kubevirt_cpu_model"
+    description: "KubeVirt CPU model must be set to 'host-model' for optimal performance"
+    severity: "WARN"
+    expected:
+      cpu_model: "host-model"
