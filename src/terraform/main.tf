@@ -1,26 +1,9 @@
-terraform {
-  required_version = ">= 1.4.0"
-
-  required_providers {
-    kubernetes = {
-      source  = "hashicorp/kubernetes"
-      version = "~> 2.30"
-    }
-  }
-}
-
-# Uses the same kubeconfig as oc (since oc already works)
-provider "kubernetes" {
-  config_path = pathexpand("~/.kube/config")
-}
-
 # READ-ONLY: If this works, Terraform is connected to the cluster API
 data "kubernetes_nodes" "all" {}
 
 # output "connected" {
 #   value = length(data.kubernetes_nodes.all.nodes) > 0
 # }
-
 # output "node_count" {
 #   value = length(data.kubernetes_nodes.all.nodes)
 # }
