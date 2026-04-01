@@ -1,0 +1,15 @@
+outputs/**
+!outputs/info.txt
+
+
+# Local Terraform state and caches
+.terraform/
+*.tfstate
+*.tfstate.backup
+*.tfplan
+
+# Lock files (keep .terraform.lock.hcl)
+
+# Sensitive vars and logs
+*.tfvars
+crash.log

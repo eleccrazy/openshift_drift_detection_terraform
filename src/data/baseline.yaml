@@ -1,0 +1,9 @@
+baseline_name: "osv-drift-baseline-v0"
+cluster: "rh-learning-osv"
+
+rules:
+  - id: "workers_not_cordoned"
+    description: "No worker-only nodes should be cordoned (unschedulable)"
+    severity: "osv-drift-baseline-v0"
+    expected:
+      cordoned_worker_nodes: []
