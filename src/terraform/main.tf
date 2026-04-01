@@ -56,30 +56,25 @@ locals {
   all_worker_nodes_schedulable = length(local.cordoned_worker_nodes) == 0
 
   # HCO facts we need
-  # hco = {
-  #   name = try(data.kubernetes_resource.hco.object.metadata[0].name, null)
-  # }
-  # namespace = try(data.kubernetes_resource.hco.object.metadata[0].namespace, null)
-  # live_migration_config = {
-  #   bandwidth_per_migration      = try(data.kubernetes_resource.hco.object.spec.liveMigrationConfig.bandwidthPerMigration, null)
-  #   parallel_migrations_per_node = try(data.kubernetes_resource.hco.object.spec.liveMigrationConfig.parallelMigrationsPerNode, null)
-  #   parallel_outgoing_migrations = try(data.kubernetes_resource.hco.object.spec.liveMigrationConfig.parallelOutboundMigrationsPerNode, null)
-  #   parallel_incoming_migrations = try(data.kubernetes_resource.hco.object.spec.liveMigrationConfig.parallelInboundMigrationsPerNode, null)
-  # }
-  # eviction_strategy = try(data.kubernetes_resource.hco.object.spec.evictionStrategy, null)
-  # feature_gates = {
-  #   enabled = try(data.kubernetes_resource.hco.object.spec.featureGates.enable, [])
-  # }
+  hco = {
+    name      = try(data.kubernetes_resource.hco.object.metadata.name, null)
+    namespace = try(data.kubernetes_resource.hco.object.metadata.namespace, null)
+    live_migration_config = {
+      bandwidth_per_migration      = try(data.kubernetes_resource.hco.object.spec.liveMigrationConfig.bandwidthPerMigration, null)
+      parallel_migrations_per_node = try(data.kubernetes_resource.hco.object.spec.liveMigrationConfig.parallelMigrationsPerCluster, null)
+      parallel_outgoing_migrations = try(data.kubernetes_resource.hco.object.spec.liveMigrationConfig.parallelOutboundMigrationsPerNode, null)
+      completion_timeout_per_GiB   = try(data.kubernetes_resource.hco.object.spec.liveMigrationConfig.completionTimeoutPerGiB, null)
+    }
+    eviction_strategy = try(data.kubernetes_resource.hco.object.spec.evictionStrategy, null)
+    feature_gates     = try(data.kubernetes_resource.hco.object.spec.featureGates, {})
+  }
 
-  # # KubeVirt facts we need
-  # kubevirt = { name = try(data.kubernetes_resource.kubevirt.object.metadata[0].name, null)
-  #   namespace = try(data.kubernetes_resource.kubevirt.object.metadata[0].namespace, null)
-  #   cpu_model = try(data.kubernetes_resource.kubevirt.object.spec.configuration.cpuModel, null)
-  # }
 
-  hco = data.kubernetes_resource.hco.object
-  kubevirt = data.kubernetes_resource.kubevirt.object
-
+  # KubeVirt facts we need
+  kubevirt = { name = try(data.kubernetes_resource.kubevirt.object.metadata[0].name, null)
+    namespace = try(data.kubernetes_resource.kubevirt.object.metadata[0].namespace, null)
+    cpu_model = try(data.kubernetes_resource.kubevirt.object.spec.configuration.cpuModel, null)
+  }
 }
 
 # output "worker_only_nodes" {

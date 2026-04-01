@@ -14,9 +14,9 @@ rules:
     expected:
       live_migration_config:
         bandwidth_per_migration: "64Mi"
-        parallel_migrations_per_node: 1
+        parallel_migrations_per_cluster: 5
         parallel_outgoing_migrations: 2
-        parallel_incoming_migrations: 2
+        completion_timeout_per_GiB: 800
 
   - id: "hco_eviction_strategy"
     description: "Eviction strategy must allow live migration"

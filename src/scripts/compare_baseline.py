@@ -84,7 +84,6 @@ def evalute_executer():
         "baseline_name": baseline.get("baseline_name"),
         "cluster": baseline.get("cluster"),
         "generated_at": datetime.utcnow().isoformat() + "Z",
-        "facts": facts,
         "results": results,
         "summary": summary
     }
