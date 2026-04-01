@@ -2,6 +2,14 @@ outputs/**
 !outputs/info.txt
 
 
+# Ignore python virtual environments and cache files.
+.venv/
+__pycache__/
+*.pyc
+
+# Ignore env var files
+*.env
+
 # Local Terraform state and caches
 .terraform/
 *.tfstate
