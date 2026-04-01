@@ -2,7 +2,9 @@
 import json
 import csv
 import sys
+import os
 from datetime import datetime
+from paths import DRIFT_REPORT_PATH, DRIFT_REPORT_PATH_JSON, DRIFT_REPORT_PATH_CSV, BASELINE_FILE_PATH, FACTS_JSON_PATH
 
 try:
     import yaml
@@ -59,13 +61,9 @@ def evaluate_rule(rule: dict, facts: dict) -> dict:
         "error": "Rule evaluator not implemented"
     }
 
-def main():
-    if len(sys.argv) != 3:
-        print("Usage: compare_baseline.py baseline.yaml facts.json", file=sys.stderr)
-        sys.exit(2)
-
-    baseline_path = sys.argv[1]
-    facts_path = sys.argv[2]
+def evalute_executer():
+    baseline_path = BASELINE_FILE_PATH
+    facts_path = FACTS_JSON_PATH
 
     baseline = load_yaml(baseline_path)
     facts = load_json(facts_path)
@@ -90,13 +88,16 @@ def main():
         "results": results,
         "summary": summary
     }
+    
+    # Ensure the report directory exists
+    os.makedirs(DRIFT_REPORT_PATH, exist_ok=True)
 
     # Write JSON report
-    with open("report.json", "w", encoding="utf-8") as f:
+    with open(DRIFT_REPORT_PATH_JSON, "w", encoding="utf-8") as f:
         json.dump(report, f, indent=2)
 
     # Write CSV report (simple)
-    with open("report.csv", "w", newline="", encoding="utf-8") as f:
+    with open(DRIFT_REPORT_PATH_CSV, "w", newline="", encoding="utf-8") as f:
         fieldnames = ["id", "severity", "pass", "expected", "actual"]
         writer = csv.DictWriter(f, fieldnames=fieldnames)
         writer.writeheader()
@@ -108,8 +109,3 @@ def main():
                 "expected": json.dumps(r.get("expected")),
                 "actual": json.dumps(r.get("actual"))
             })
-
-    print("Generated: report.json, report.csv")
-
-if __name__ == "__main__":
-    main()

@@ -15,12 +15,11 @@ from pathlib import Path
 
 from dotenv import load_dotenv
 from paths import (
-    DRIFT_REPORT_PATH,
-    DRIFT_REPORT_PATH_CSV,
-    DRIFT_REPORT_PATH_JSON,
     TFOUPUT_PATH,
     TFPLAN_BIN_PATH,
+    FACTS_JSON_PATH
 )
+from compare_baseline import evalute_executer
 
 load_dotenv()  # Load environment variables from .env file if present
 
@@ -101,7 +100,7 @@ def run_terraform_commands():
     # Run terraform show to convert the plan output to JSON and save it to a file.
     print("\nConverting terraform plan output to JSON...")
     # Run and check the current pwd
-    show_command = f"terraform show -json {TFPLAN_BIN_PATH} | jq -r '.output_changes.facts.after' > {os.path.join(TFOUPUT_PATH, 'facts.json')}"
+    show_command = f"terraform show -json {TFPLAN_BIN_PATH} | jq -r '.output_changes.facts.after' > {FACTS_JSON_PATH}"
     execute_command(show_command, has_redirect=True)
     print("Conversion with terraform show completed successfully. Facts saved to facts.json.")
     
@@ -117,6 +116,9 @@ def main():
     print("\n")
     run_terraform_commands()
     print("\n")
+    print("Starting the evaluation of the drift detection results against the baseline...")
+    evalute_executer()
+    print("\nDrift detection process completed successfully. Reports generated in the outputs/report/ directory.")
 
 if __name__ == "__main__":
     main()

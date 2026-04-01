@@ -4,6 +4,6 @@ cluster: "rh-learning-osv"
 rules:
   - id: "workers_not_cordoned"
     description: "No worker-only nodes should be cordoned (unschedulable)"
-    severity: "osv-drift-baseline-v0"
+    severity: "info"
     expected:
       cordoned_worker_nodes: []

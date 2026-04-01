@@ -17,8 +17,13 @@ OUTPUTS_DIR = os.path.join(BASE_DIR, "outputs")
 # Define terraform output directory
 TFOUPUT_PATH = os.path.join(OUTPUTS_DIR, "terraform")
 TFPLAN_BIN_PATH = os.path.join(TFOUPUT_PATH, "tfplan.bin")
+FACTS_JSON_PATH = os.path.join(TFOUPUT_PATH, "facts.json")
+
+# Define path for the baseline configuration file
+BASELINE_FILE_PATH = os.path.join(BASE_DIR, "data", "baseline.yaml")
 
 # Define path for the drift report
 DRIFT_REPORT_PATH = os.path.join(OUTPUTS_DIR, "report")
 DRIFT_REPORT_PATH_JSON = os.path.join(DRIFT_REPORT_PATH, "drift_report.json")
 DRIFT_REPORT_PATH_CSV = os.path.join(DRIFT_REPORT_PATH, "drift_report.csv")
+
